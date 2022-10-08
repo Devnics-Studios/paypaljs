@@ -1,4 +1,7 @@
+import { Money } from "./PayPalTypes";
+
 export type InvoiceStatus = "DRAFT" | "SENT" | "SCHEDULED" | "PAID" | "MARKED_AS_PAID" | "CANCELLED" | "REFUNDED" | "PARTIALLY_PAID" | "PARTIALLY_REFUNDED" | "MARKED_AS_REFUNDED" | "UNPAID" | "PAYMENT_PENDING"
+export type MeasureUnit = "QUANTITY" | "HOURS" | "AMOUNT";
 
 export type InvoiceAttachment = {
     content_type?: string;
@@ -30,4 +33,23 @@ export type InvoicePaymentTerm = {
 
 export type InvoiceAdditionalRecipient = {
     email_address?: string;
-}[]
+}[];
+
+export type InvoiceItem = {
+    name: string;
+    quantity: string;
+    unit_amount: Money;
+    description?: string;
+    discount?: {
+        amount?: Money;
+        percent?: string;
+    };
+    id?: string;
+    item_date?: string;
+    tax?: {
+        name: string;
+        percent: string;
+        amount?: Money;
+    };
+    unit_of_measure?: MeasureUnit;
+}
