@@ -42,7 +42,7 @@ export default class PayPal {
             })
                 .then(res => {
                     this.token = res.data["access_token"];
-                    this.Request = new Request().configure(this.token);
+                    this.Request = new Request().configure(this.token, this.url);
                     resolve(true)
                 })
                 .catch(err => {

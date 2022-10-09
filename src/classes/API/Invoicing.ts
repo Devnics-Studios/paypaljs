@@ -9,7 +9,19 @@ export default class Invoicing {
         this.paypal = paypal;
     }
     
-    create(data: InvoiceRequestData) {
+    createDraftInvoice(data: InvoiceRequestData) {
+        return new Promise((resolve, reject) => {
+            this.paypal.Request.post("/v2/invoicing/invoices", data)
+            .then(res => {
+                resolve(res.data as InvoiceRequestData);
+            })
+            .catch(err => {
+                reject(err);
+            })
+        })
+    }
 
+    sendInvoice(data: InvoiceRequestData) {
+        
     }
 }
