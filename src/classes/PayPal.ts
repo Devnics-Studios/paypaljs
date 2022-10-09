@@ -1,5 +1,4 @@
 import axios from "axios";
-import Invoicing from "./API/Invoicing";
 import Request from "./API/Request";
 
 export default class PayPal {
@@ -10,7 +9,6 @@ export default class PayPal {
     private token: string = null;
     
     public Request: Request = null;
-    public Invoicing = new Invoicing(this);
 
     constructor(options: PayPalOptions) {
         this.options = options;
