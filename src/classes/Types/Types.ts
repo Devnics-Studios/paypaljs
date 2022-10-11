@@ -9,6 +9,61 @@ export interface Invoice {
     invoicer?: InvoicerInfo;
     items?: Item[];
     links?: LinkDescription[];
+    parent_id?: string;
+    payments?: Payment;
+}
+
+export interface Payment {
+    paid_amount?: Money;
+    transactions?: PaymentDetail[];
+}
+
+export type PaymentMethod = "BANK_TRANSFER" | "CASH" | "CHECK" | "CREDIT_CARD" | "DEBIT_CARD" | "PAYPAL" | "WIRE_TRANSFER" | "OTHER";
+
+export interface PaymentDetail {
+    method: PaymentMethod;
+    amount?: Money;
+    note?: string;
+    payment_date?: string;
+    payment_id?: string;
+    shipping_info?: ContactInformation;
+}
+
+export interface ContactInformation {
+    business_name?: string;
+    address?: AddressPortable;
+    name?: Name;
+}
+
+export interface AddressPortable {
+    country_code: string;
+    address_details?: AddressDetails;
+    address_line_1?: string;
+    address_line_2?: string;
+    address_line_3?: string;
+    admin_area_1?: string;
+    admin_area_2?: string;
+    admin_area_3?: string;
+    admin_area_4?: string;
+    postal_code?: string;
+}
+
+export interface AddressDetails {
+    building_name?: string;
+    delivery_service?: string
+    street_name?: string;
+    street_number?: string;
+    street_type?: string;
+    sub_building?: string;
+}
+
+export interface Name {
+    full_name?: string;
+    given_name?: string;
+    middle_name?: string;
+    prefix?: string;
+    suffix?: string;
+    surname?: string
 }
 
 export interface LinkDescription {
@@ -17,7 +72,7 @@ export interface LinkDescription {
     method?: LinkMethod;
 }
 
-export type LinkMethod = "GET"|"POST"|"PUT"|"DELETE"|"HEAD"|"CONNECT"|"OPTIONS"|"PATCH"
+export type LinkMethod = "GET" | "POST" | "PUT" | "DELETE" | "HEAD" | "CONNECT" | "OPTIONS" | "PATCH"
 
 export interface Item {
     name: string;
@@ -48,7 +103,7 @@ export interface PhoneDetail {
     phone_type?: PhoneType;
 }
 
-export type PhoneType = "FAX"|"HOME"|"MOBILE"|"OTHER"|"PAGER";
+export type PhoneType = "FAX" | "HOME" | "MOBILE" | "OTHER" | "PAGER";
 
 export interface Configuration {
     allow_tip?: boolean;
