@@ -110,7 +110,7 @@ export interface Item {
     unit_amount: Money;
     discount?: Discount;
     id?: string;
-    item_date: string;
+    item_date?: string;
     tax?: Tax;
     unit_of_measure?: UnitOfMeasure;
 }

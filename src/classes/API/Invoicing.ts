@@ -1,28 +1,43 @@
 import PayPal from "../PayPal";
-import { Invoice } from "../Types/Types";
+import { EmailAddress, Invoice, LinkDescription } from "../Types/Types";
 
 export default class Invoicing {
+  private paypal: PayPal;
 
-    private paypal: PayPal;
+  constructor(paypal: PayPal) {
+    this.paypal = paypal;
+  }
 
-    constructor(paypal: PayPal) {
-        this.paypal = paypal;
-    }
-
-    createDraftInvoice(invoice: Invoice) {
-        return new Promise<Invoice>((resolve, reject) => {
-            this.paypal.Request.post("/v2/invoicing/invoices", invoice)
-            .then(res => {
-                resolve(res.data)
-            })
-            .catch(err => {
-                reject(err);
-            })
+  createDraftInvoice(invoice: Invoice) {
+    return new Promise<LinkDescription>((resolve, reject) => {
+      this.paypal.Request.post("/v2/invoicing/invoices", invoice)
+        .then((res) => {
+          resolve(res.data);
         })
-    }
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
 
-    sendInvoice(invoice: Invoice) {
-        
+  sendInvoice(
+    invoiceId: string,
+    data: {
+      additional_recipients?: EmailAddress[];
+      note?: string;
+      send_to_invoicer?: boolean;
+      send_to_recipient?: boolean;
+      subject?: string;
     }
-    
+  ) {
+    return new Promise<LinkDescription[]>((resolve, reject) => {
+      this.paypal.Request.post(`/v2/invoicing/invoices/${invoiceId}/send`, data)
+        .then((res) => {
+          resolve(res.data);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
 }

@@ -1,4 +1,5 @@
 import axios from "axios";
+import Invoicing from "./API/Invoicing";
 import Request from "./API/Request";
 
 export default class PayPal {
@@ -9,16 +10,19 @@ export default class PayPal {
     private token: string = null;
     
     public Request: Request = null;
+    public Invoicing: Invoicing = new Invoicing(this);
 
     constructor(options: PayPalOptions) {
         this.options = options;
         this.url = options.mode == "LIVE" ? this.url : "https://api-m.sandbox.paypal.com";
     }
 
-    async authenticate() {
-        this.refreshToken().then(isAuthenticated => {
-            if (isAuthenticated) return;
-            throw new Error("Failed to authenticate, PayPal credentials invalid.");
+    authenticate() {
+        return new Promise<PayPal>((resolve, reject) => {
+            this.refreshToken().then(isAuthenticated => {
+                if (isAuthenticated) return resolve(this);
+                reject(new Error("Failed to authenticate, PayPal credentials invalid."));
+            })
         })
     }
 
@@ -39,6 +43,12 @@ export default class PayPal {
                 }
             })
                 .then(res => {
+                    new Promise<null>((resolve, reject) => {
+                        setTimeout(() => {
+                            this.refreshToken();
+                            resolve(null);
+                        }, res.data["expires_in"])
+                    })
                     this.token = res.data["access_token"];
                     this.Request = new Request().configure(this.token, this.url);
                     resolve(true)
