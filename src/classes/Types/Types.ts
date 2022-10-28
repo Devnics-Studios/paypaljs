@@ -12,6 +12,23 @@ export interface Invoice {
     parent_id?: string;
     payments?: Payment;
     primary_recipients?: RecipientInfo[];
+    refunds?: Refunds;
+    status?: InvoiceStatus;
+}
+
+export type InvoiceStatus = "DRAFT" | "SENT" | "SCHEDULED" | "PAID" | "MARKED_AS_PAID" | "CANCELLED" |"REFUNDED" | "PARTIALLY_PAID" | "PARTIALLY_REFUNDED" | "MARKED_AS_REFUNDED" | "UNPAID" | "PAYMENT_PENDING"
+
+export interface RefundDetail {
+    method?: PaymentMethod;
+    amount?: Money;
+    refund_date?: string;
+    refund_id?: string;
+    type?: "PAYPAL" | "EXTERNAL";
+}
+
+export interface Refunds {
+    refund_amount?: Money;
+    transactions?: RefundDetail[]
 }
 
 export interface RecipientInfo {
