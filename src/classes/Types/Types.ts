@@ -11,6 +11,19 @@ export interface Invoice {
     links?: LinkDescription[];
     parent_id?: string;
     payments?: Payment;
+    primary_recipients?: RecipientInfo[];
+}
+
+export interface RecipientInfo {
+    billing_info?: BillingInfo;    
+    shipping_info?: ContactInformation;
+}
+
+export interface BillingInfo {
+    additional_info?: string;
+    email_address?: string;
+    language?: string;
+    phones?: PhoneDetail[];
 }
 
 export interface Payment {
